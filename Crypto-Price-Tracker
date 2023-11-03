@@ -1,0 +1,23 @@
+import requests
+import json
+
+# Список криптовалют, цены которых вы хотите отслеживать
+cryptos_to_track = ["bitcoin", "ethereum", "ripple"]
+
+def get_crypto_prices(cryptos):
+    base_url = "https://api.coingecko.com/api/v3/simple/price"
+    params = {
+        "ids": ",".join(cryptos),
+        "vs_currencies": "usd"
+    }
+
+    response = requests.get(base_url, params=params)
+    if response.status_code == 200:
+        data = json.loads(response.text)
+        for crypto, price_data in data.items():
+            print(f"{crypto}: {price_data['usd']} USD")
+    else:
+        print("Ошибка при запросе данных о ценах на криптовалюты.")
+
+if __name__ == "__main__":
+    get_crypto_prices(cryptos_to_track)
